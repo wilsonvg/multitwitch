@@ -1,14 +1,15 @@
-Multitwitch -- Multiple twitch streams on one page.
+## Multitwitch -- Multiple twitch streams on one page.
 
 Originally from https://github.com/bhamrick/multitwitch and used with
 permission
 
-### X3L Version of Multitwitch
+## X3L Version of Multitwitch
 
 ### Creating the config file
 The config file looks like this and must be in the runtime directory of the
 project.
 
+```
 [DEFAULT]
 community_name = x3lgaming  # any community name will work
 title = X3LGaming Multitwitch  # the title used on the pages
@@ -22,8 +23,7 @@ unauthclient_id = secret   # client id from app
 # authclient is the app that gets follows; it needs user_read scope
 authclient_id = secret   # client id from app
 authclient_oath = secretoauth  # oauth token from app
-
-
+```
 
 unauthclient_id and authclient_id do not need to be the same. authclient_oauth
 needs to come from the correct clientid though.
