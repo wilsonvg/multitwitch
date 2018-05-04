@@ -1,4 +1,5 @@
 *.pyc
 multitwitch.egg-info
+config.ini
 
 .venv/
