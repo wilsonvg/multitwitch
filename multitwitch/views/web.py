@@ -1,3 +1,4 @@
+import configparser
 import requests
 import json
 
@@ -11,24 +12,39 @@ class WebView:
 
     @web(template="web/home.tmpl")
     def home(request):
-        community_name = 'x3lgaming'
-        streamlister = sl.StreamLister()
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        default = config['DEFAULT']
+        community_name = default.get('community_name', 'x3lgaming')
+        title = default.get('title', 'X3LGaming Multitwitch')
+        base_url = default.get('base_url', 'http://rtmp.roaet.com:5000')
+
+        streamlister = sl.StreamLister(config)
         community_streams = streamlister.get_community_streams_by_name(
             community_name)
-        return {'project' : 'X3LGaming MultiTwitch',
+        staff_picks = streamlister.get_staff_picks()
+        return {'project' : title,
                 'streams' : [],
                 'community_streams': community_streams,
                 'community_name': community_name,
-                'base_url' : 'http://rtmp.roaet.com:5000',
+                'staff_picks': staff_picks,
+                'base_url' : base_url,
                 'unique_streams' : [],
                 'nstreams' : len([])}
 
     @web(template="web/home.tmpl")
     def edit(request):
-        community_name = 'x3lgaming'
-        streamlister = sl.StreamLister()
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        default = config['DEFAULT']
+        community_name = default.get('community_name', 'x3lgaming')
+        title = default.get('title', 'X3LGaming Multitwitch')
+        base_url = default.get('base_url', 'http://rtmp.roaet.com:5000')
+
+        streamlister = sl.StreamLister(config)
         community_streams = streamlister.get_community_streams_by_name(
             community_name)
+        staff_picks = streamlister.get_staff_picks()
 
         path = request.path
         print path
@@ -43,11 +59,12 @@ class WebView:
         stream_list.pop(0) # removes 'edit'
         edit_string = '/'.join(stream_list)
         print stream_list
-        return {'project' : 'X3LGaming MultiTwitch',
+        return {'project' : title,
                 'streams' : stream_list,
                 'community_streams': community_streams,
                 'community_name': community_name,
-                'base_url' : 'http://rtmp.roaet.com:5000',
+                'staff_picks': staff_picks,
+                'base_url' : base_url,
                 'unique_streams' : [],
                 'edit_string': edit_string,
                 'nstreams' : len(stream_list)}
@@ -70,6 +87,13 @@ class WebView:
 
     @web(template="web/streams.tmpl")
     def streams(request):
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        default = config['DEFAULT']
+        community_name = default.get('community_name', 'x3lgaming')
+        title = default.get('title', 'X3LGaming Multitwitch')
+        base_url = default.get('base_url', 'http://rtmp.roaet.com:5000')
+
         path = request.path
         if path.startswith('/'):
             path = path[1:]
@@ -84,17 +108,24 @@ class WebView:
             return "REDIRECT:multitwitch:%s" % path
         stream_list = path_parts[:-1]
         edit_string = '/'.join(stream_list)
-        return {'project' : 'X3LGaming MultiTwitch',
+        return {'project' : title,
                 'streams' : stream_list,
-                'base_url' : 'http://rtmp.roaet.com:5000',
+                'base_url' : base_url,
                 'unique_streams' : [],
                 'edit_string': edit_string,
                 'nstreams' : len(stream_list)}
 
     @web()
     def twitch_api_test(request):
-        streamlister = sl.StreamLister()
-        stream_list = streamlister.get_community_streams_by_name('x3lgaming')
+        config = configparser.ConfigParser()
+        default = config['DEFAULT']
+        community_name = default.get('community_name', 'x3lgaming')
+        title = default.get('title', 'X3LGaming Multitwitch')
+        base_url = default.get('base_url', 'http://rtmp.roaet.com:5000')
+
+        streamlister = sl.StreamLister(config)
+        stream_list = streamlister.get_community_streams_by_name(
+            community_name)
         return str(stream_list)
 
     @staticmethod

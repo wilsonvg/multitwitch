@@ -586,7 +586,7 @@
 					</div>
 					
 					</div>
-					<div class='formcaption'>Multistream currently only supports <a href="http://twitch.tv">Twitch</a> streams.</div>
+					<!--<div class='formcaption'>Multistream currently only supports <a href="http://twitch.tv">Twitch</a> streams.</div>-->
 				</div>
 				<div id="featured" class='channellist clearfix'>
 					<div id='quickpicks'>
@@ -601,20 +601,30 @@
 						</div>-->
 						<div id='tag-filters' class='filter-group'>
                             <!-- filters -->
-							<button data-filter-value=".tag-community">{{ community_name }} Community</button>
-							<button data-filter-value=".tag-staff-picks">Staff Picks</button>
-							<button data-filter-value="*">All</button>
+							<button data-filter-value=".tag-community">X3L Community</button>
+							<button data-filter-value=".tag-patrons">Patrons</button>
+							<!-- <button data-filter-value="*">All</button> -->
 						</div>
 					</div>
 					<div id="featuredlist">
 					<div class='grid-sizer'></div>
 					
+                        <!-- community/patrons picks -->
                         {% for comstream in community_streams %}
-                        <!-- community/staff picks -->
 						<div class="channel tag-community" rel="{{comstream['name']}}">
 							<div class=channelimage style="background-image: url('{{comstream['preview']}}');">
 								<div class=channelcaption>
 									<div class=channelname>{{comstream['name']}}</div>
+									
+								</div>
+							</div>
+						</div>
+                        {% endfor %}
+                        {% for patronstream in staff_picks %}
+						<div class="channel tag-patrons" rel="{{patronstream['name']}}">
+							<div class=channelimage style="background-image: url('{{patronstream['preview']}}');">
+								<div class=channelcaption>
+									<div class=channelname>{{patronstream['name']}}</div>
 									
 								</div>
 							</div>
